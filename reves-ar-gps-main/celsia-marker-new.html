@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Celsia AR Marker</title>
+    <style>
+        body { margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; background: white; }
+        canvas { border: 2px solid black; }
+    </style>
+</head>
+<body>
+    <canvas id="markerCanvas" width="512" height="512"></canvas>
+    <script>
+        const canvas = document.getElementById('markerCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // White background
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, 512, 512);
+        
+        // Black border
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 40;
+        ctx.strokeRect(50, 50, 412, 412);
+        
+        // Draw the Celsia rays symbol (just the top part without text)
+        ctx.fillStyle = 'black';
+        
+        // Center point
+        const centerX = 256;
+        const centerY = 256;
+        
+        // Draw the rays in a fan pattern
+        ctx.save();
+        ctx.translate(centerX, centerY);
+        
+        const numRays = 5;
+        const angleStep = (Math.PI * 0.8) / (numRays - 1); // Spread rays in a fan pattern
+        const startAngle = -Math.PI * 0.4; // Start at -40 degrees
+        
+        for (let i = 0; i < numRays; i++) {
+            const angle = startAngle + (i * angleStep);
+            
+            ctx.save();
+            ctx.rotate(angle);
+            
+            // Draw a triangular ray
+            ctx.beginPath();
+            ctx.moveTo(-20, 0);
+            ctx.lineTo(0, -120);
+            ctx.lineTo(20, 0);
+            ctx.closePath();
+            ctx.fill();
+            
+            ctx.restore();
+        }
+        
+        ctx.restore();
+    </script>
+</body>
+</html>
