@@ -1,0 +1,10 @@
+<svg width="800" height="200" xmlns="http://www.w3.org/2000/svg">
+  <g fill="#000000">
+    <!-- Sun rays -->
+    <path d="M100 20 L120 60 L80 60 Z"/>
+    <path d="M140 30 L160 70 L120 70 Z"/>
+    <path d="M60 30 L80 70 L40 70 Z"/>
+    <!-- CELSIA text -->
+    <text x="200" y="150" font-family="Arial" font-size="120" font-weight="bold">CELSIA</text>
+  </g>
+</svg>
