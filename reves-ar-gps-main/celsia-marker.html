@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Celsia AR Marker</title>
+    <style>
+        body { margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; background: white; }
+        canvas { border: 2px solid black; }
+    </style>
+</head>
+<body>
+    <canvas id="markerCanvas" width="512" height="512"></canvas>
+    <script>
+        const canvas = document.getElementById('markerCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // White background
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, 512, 512);
+        
+        // Black border
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 40;
+        ctx.strokeRect(50, 50, 412, 412);
+        
+        // Draw the rays pattern similar to the logo
+        ctx.fillStyle = 'black';
+        
+        // Center point
+        const centerX = 256;
+        const centerY = 256;
+        
+        // Draw the rays
+        ctx.beginPath();
+        // Left ray
+        ctx.moveTo(centerX - 100, centerY);
+        ctx.lineTo(centerX - 180, centerY - 80);
+        ctx.lineTo(centerX - 180, centerY + 80);
+        ctx.closePath();
+        ctx.fill();
+        
+        // Middle ray
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY - 20);
+        ctx.lineTo(centerX - 40, centerY + 100);
+        ctx.lineTo(centerX + 40, centerY + 100);
+        ctx.closePath();
+        ctx.fill();
+        
+        // Right ray
+        ctx.beginPath();
+        ctx.moveTo(centerX + 100, centerY);
+        ctx.lineTo(centerX + 180, centerY - 80);
+        ctx.lineTo(centerX + 180, centerY + 80);
+        ctx.closePath();
+        ctx.fill();
+    </script>
+</body>
+</html>
