@@ -1,0 +1,159 @@
+<html>
+  <head>
+    <title>AR.js + A-Frame</title>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+      #loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #1a1a1a 0%, #363636 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        transition: opacity 0.8s ease;
+      }
+      #loading-screen h1 {
+        color: white;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        font-size: 32px;
+        margin-bottom: 24px;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        animation: fadeInUp 0.8s ease;
+      }
+      #loading-screen p {
+        color: #ff812d;
+        font-family: 'Poppins', sans-serif;
+        font-size: 18px;
+        margin: 12px;
+        text-align: center;
+        max-width: 80%;
+        opacity: 0;
+        animation: fadeInUp 0.8s ease forwards;
+      }
+      #loading-screen p:nth-child(2) {
+        animation-delay: 0.3s;
+      }
+      #loading-screen p:nth-child(3) {
+        animation-delay: 0.6s;
+      }
+      .loading-icon {
+        width: 40px;
+        height: 40px;
+        border: 3px solid #ff812d;
+        border-radius: 50%;
+        border-top-color: transparent;
+        margin-bottom: 20px;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <script>
+      // Handle marker detection
+      AFRAME.registerComponent('markerhandler', {
+        init: function() {
+          this.el.addEventListener('markerFound', () => {
+            // Marker found - model will appear automatically
+          });
+          this.el.addEventListener('markerLost', () => {
+            // Marker lost - model will disappear automatically
+          });
+        }
+      });
+
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          const loadingScreen = document.getElementById('loading-screen');
+          loadingScreen.style.opacity = '0';
+          setTimeout(function() {
+            loadingScreen.style.display = 'none';
+          }, 800);
+        }, 3000); // Show loading screen for 3 seconds to see animations
+      });
+
+      AFRAME.registerComponent('auto-play-animation', {
+        init: function () {
+          this.el.addEventListener('model-loaded', () => {
+            const model = this.el.components['gltf-model'].model;
+            if (model && model.animations && model.animations.length > 0) {
+              const mixer = new THREE.AnimationMixer(model);
+              const action = mixer.clipAction(model.animations[0]);
+              action.play();
+
+              // Update animation in render loop
+              let lastTime = 0;
+              const animate = (time) => {
+                if (lastTime !== 0) {
+                  const delta = (time - lastTime) / 1000;
+                  mixer.update(delta);
+                }
+                lastTime = time;
+                requestAnimationFrame(animate);
+              };
+              requestAnimationFrame(animate);
+            }
+          });
+        }
+      });
+    </script>
+  </head>
+  <body style="margin: 0; overflow: hidden;">
+    <div id="loading-screen">
+      <div class="loading-icon"></div>
+      <h1>Experiencia AR</h1>
+      <p>Prepárate para una experiencia interactiva en 3D</p>
+      <p>Apunta tu cámara al marcador HIRO</p>
+      <p>Cargando experiencia inmersiva...</p>
+    </div>
+
+
+    
+    <a-scene 
+      embedded 
+      arjs='sourceType: webcam; debugUIEnabled: false; detectionMode: mono; patternRatio: 0.50; trackingMethod: best;'
+      vr-mode-ui="enabled: false"
+      renderer="colorManagement: true; physicallyCorrectLights: true; outputEncoding: sRGB"
+      gltf-model="dracoDecoderPath: https://www.gstatic.com/draco/v1/decoders/;">
+      
+      <a-entity light="type: ambient; intensity: 1.0"></a-entity>
+      <a-entity light="type: directional; intensity: 0.8; castShadow: true" position="1 1 1"></a-entity>
+      
+      <a-marker preset="HIRO" markerhandler>
+        <!-- Replace with your 3D model's path -->
+        <a-entity 
+          gltf-model="AnimacionFinal2.glb"
+          position="0.5 0 0"
+          rotation="90 180 0"
+          scale="0.05 0.05 0.05"
+          material="shader: standard; roughness: 1; metalness: 0"
+          animation-mixer="loop: repeat">
+        </a-entity>
+      </a-marker>
+      <a-entity camera></a-entity>
+    </a-scene>
+  </body>
+</html>
