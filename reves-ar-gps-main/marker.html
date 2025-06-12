@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Celsia AR Marker</title>
+    <style>
+        body { margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; background: white; }
+        canvas { border: 2px solid black; }
+    </style>
+</head>
+<body>
+    <canvas id="markerCanvas" width="512" height="512"></canvas>
+    <script>
+        const canvas = document.getElementById('markerCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // White background
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, 512, 512);
+        
+        // Black border
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 40;
+        ctx.strokeRect(50, 50, 412, 412);
+        
+        // Triangle symbol
+        ctx.fillStyle = 'black';
+        ctx.beginPath();
+        ctx.moveTo(256, 120);  // top point
+        ctx.lineTo(156, 280);  // bottom left
+        ctx.lineTo(356, 280);  // bottom right
+        ctx.closePath();
+        ctx.fill();
+        
+        // CELSIA text
+        ctx.font = 'bold 80px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('CELSIA', 256, 380);
+    </script>
+</body>
+</html>
