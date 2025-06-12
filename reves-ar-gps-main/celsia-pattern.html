@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Celsia AR Marker</title>
+    <style>
+        body { margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; background: white; }
+        canvas { border: 2px solid black; }
+    </style>
+</head>
+<body>
+    <canvas id="markerCanvas" width="512" height="512"></canvas>
+    <script>
+        const canvas = document.getElementById('markerCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // White background
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, 512, 512);
+        
+        // Black border
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 40;
+        ctx.strokeRect(50, 50, 412, 412);
+        
+        // Draw the rays pattern from the Celsia logo
+        ctx.fillStyle = 'black';
+        ctx.save();
+        ctx.translate(256, 256); // Center of canvas
+
+        // Draw the rays
+        const numRays = 5;
+        const rayWidth = 40;
+        const rayLength = 160;
+        const startY = -80;
+
+        for (let i = 0; i < numRays; i++) {
+            ctx.save();
+            ctx.rotate((i * (Math.PI / 2.5)) - Math.PI/2);
+            
+            // Draw a ray
+            ctx.beginPath();
+            ctx.moveTo(-rayWidth/2, startY);
+            ctx.lineTo(0, startY + rayLength);
+            ctx.lineTo(rayWidth/2, startY);
+            ctx.closePath();
+            ctx.fill();
+            
+            ctx.restore();
+        }
+        
+        ctx.restore();
+    </script>
+</body>
+</html>
